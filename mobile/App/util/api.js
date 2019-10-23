@@ -2,8 +2,8 @@ import { AsyncStorage } from "react-native";
 import { navigate } from "./NavigationService";
 
 //const BASE_URL = "http://localhost:3000";
-//const BASE_URL = "http://172.17.57.104:3000";
-const BASE_URL = "http://10.30.128.226:3000";
+const BASE_URL = "http://172.17.57.82:3000";
+//const BASE_URL = "http://10.30.128.226:3000";
 const AUTH_TOKEN = "ReviewApp::AUTH_TOKEN";
 
 // save user login info

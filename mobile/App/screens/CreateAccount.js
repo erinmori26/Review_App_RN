@@ -9,7 +9,7 @@ import {
 
 import { TextField, ErrorText } from "../components/Form";
 import { Button } from "../components/Button";
-import { reviewApi, saveAuthToken } from "../util/api";
+import { reviewApi } from "../util/api";
 
 const styles = StyleSheet.create({
   textBlock: {
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
 export default class CreateAccount extends React.Component {
   state = {
     email: "",
-    fname: "",
-    lname: "",
+    firstName: "",
+    lastName: "",
     password: "",
     repassword: "",
     error: ""
@@ -49,28 +49,24 @@ export default class CreateAccount extends React.Component {
     }
     //////////////////////////////////////
 
-    // authenticate user
+    ////////// CREATE NEW ACCOUNT ////////////
     reviewApi("/create-account", {
       method: "POST",
       body: JSON.stringify({
         email: this.state.email,
-        fname: this.state.fname,
-        lname: this.state.lname,
-        password: this.state.password,
-        repassword: this.state.repassword
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        password: this.state.password
       })
     })
-      .then(response => {
-        // save login info
-        return saveAuthToken(response.result.token);
-      })
       .then(() => {
-        // go to info screen
-        this.props.navigation.navigate("Information");
+        // go to login screen
+        this.props.navigation.navigate("SignIn");
       })
       .catch(error => {
         this.setState({ error: error.message });
       });
+    ///////////////////////////////////////////
   };
 
   render() {
@@ -86,15 +82,15 @@ export default class CreateAccount extends React.Component {
         <TextField
           label="First Name"
           placeholder="John"
-          onChangeText={fname => this.setState({ fname })}
-          value={this.state.fname}
+          onChangeText={firstName => this.setState({ firstName })}
+          value={this.state.firstName}
           autoCapitalize="none"
         />
         <TextField
           label="Last Name"
           placeholder="Doe"
-          onChangeText={lname => this.setState({ lname })}
-          value={this.state.lname}
+          onChangeText={lastName => this.setState({ lastName })}
+          value={this.state.lastName}
           autoCapitalize="none"
         />
         <TextField

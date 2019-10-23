@@ -52,19 +52,20 @@ const Information = createStackNavigator(
 
 const Auth = createStackNavigator(
   {
-    // TODO: CREATE ACCOUNT FUNCTIONALITY
-    CreateAccount: {
-      screen: CreateAccount,
-      navigationOptions: {
-        headerTitle: "Create Account"
-      }
-    },
     SignIn: {
       screen: SignIn,
       navigationOptions: {
         headerTitle: "Sign In"
       }
+    },
+    /////// ADD CREATE ACCOUNT SCREEN ////////
+    CreateAccount: {
+      screen: CreateAccount,
+      navigationOptions: {
+        headerTitle: "Create Account"
+      }
     }
+    /////////////////////////////////////////
   },
   {
     defaultNavigationOptions: {

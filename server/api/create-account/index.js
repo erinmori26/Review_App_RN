@@ -1,44 +1,22 @@
-const jwt = require("jsonwebtoken");
 const app = require("../../util/configureApi");
 const connectDB = require("../../util/db");
 const User = require("../../models/User");
-const config = require("../../config");
 
 app.post("*", (req, res) => {
-  let finalUser;
   connectDB()
-    // .then(user)
-    // TODO FIGURE OUT HOW TO ADD TO DB
-
-    // find user by email
+    // check if user already has an account (based on email)
     .then(() => User.findOne({ email: req.body.email }))
     .then(user => {
       if (!user) {
-        throw new Error("No user found.");
+        // create new user
+        const { email, firstName, lastName, password } = req.body;
+        return User.create({ firstName, lastName, email, password });
       }
-
-      finalUser = user;
-      return user.comparePassword(req.body.password); // check matching password
+      throw new Error("Account already exists.");
     })
-    .then(isPasswordCorrect => {
-      if (!isPasswordCorrect) {
-        throw new Error("Invalid password!");
-      }
-
-      // use jsonwebtokens - add uniqueness
-      return jwt.sign({ userId: finalUser._id }, config.JWT_SECRET, {
-        expiresIn: "1m" // stay logged in for 1 minute
-      });
-    })
-    // token from jwt calls
-    .then(token => {
+    .then(result => {
       res.status(200).json({
-        result: {
-          firstName: finalUser.firstName,
-          lastName: finalUser.lastName,
-          email: finalUser.email,
-          token
-        }
+        result
       });
     })
     .catch(err => {
