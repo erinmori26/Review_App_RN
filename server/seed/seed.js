@@ -29,7 +29,8 @@ const seed = () => {
         const reviews = data[index].reviews;
         const reviewsWithId = reviews.map(review => ({
           ...review,
-          restaurantId: item._id
+          restaurantId: item._id,
+          username: review.username
         }));
         return Review.create(reviewsWithId);
       });

@@ -4,6 +4,30 @@ const connectDB = require("../../util/db");
 const User = require("../../models/User");
 const config = require("../../config");
 
+// app.get("*", require("../../middleware/auth"), (req, res) => {
+//   connectDB()
+//     .then(() => {
+//       const { restaurantId } = req.query;
+//       // const { email } = req.user;
+
+//       if (!restaurantId) {
+//         throw new Error("No document id specified.");
+//       }
+
+//       return Review.find({ restaurantId }).sort({ createdAt: -1 });
+//     })
+//     .then(result => {
+//       res.status(200).json({
+//         result
+//       });
+//     })
+//     .catch(err => {
+//       res.status(err.statusCode || 500).json({
+//         error: err.message
+//       });
+//     });
+// });
+
 app.post("*", (req, res) => {
   let finalUser;
   connectDB()

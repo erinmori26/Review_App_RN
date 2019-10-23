@@ -1,13 +1,15 @@
 const app = require("../../util/configureApi");
 const connectDB = require("../../util/db");
+// const User = require("../../models/User");
 const Review = require("../../models/Review");
 const Restaurant = require("../../models/Restaurant");
 
-// require authorization to see reviews
 app.get("*", require("../../middleware/auth"), (req, res) => {
   connectDB()
     .then(() => {
       const { restaurantId } = req.query;
+      // const { email } = req.user;
+
       if (!restaurantId) {
         throw new Error("No document id specified.");
       }
@@ -34,8 +36,8 @@ app.post("*", require("../../middleware/auth"), (req, res) => {
         throw new Error("No restaurant found with that id.");
       }
 
-      const { restaurantId, content } = req.body;
-      return Review.create({ restaurantId, content });
+      const { restaurantId, content, username } = req.body;
+      return Review.create({ restaurantId, content, username });
     })
     .then(result => {
       res.status(200).json({

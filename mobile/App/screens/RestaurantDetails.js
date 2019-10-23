@@ -1,3 +1,175 @@
+// import React from "react";
+// import {
+//   View,
+//   StyleSheet,
+//   SafeAreaView,
+//   Text,
+//   ScrollView,
+//   ActivityIndicator,
+//   TextInput
+// } from "react-native";
+// import { format } from "date-fns";
+
+// import { Button } from "../components/Button";
+// import { reviewApi } from "../util/api";
+// import { SignIn } from "../screens/SignIn";
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#F5F5F5"
+//   },
+//   section: {
+//     backgroundColor: "#fff",
+//     borderTopWidth: 1,
+//     borderTopColor: "#E4E4E4",
+//     borderBottomWidth: 1,
+//     borderBottomColor: "#E4E4E4",
+//     marginBottom: 20,
+//     padding: 14
+//   },
+//   titleText: {
+//     fontWeight: "600",
+//     fontSize: 18,
+//     color: "#4A4A4A",
+//     marginBottom: 10,
+//     marginHorizontal: 14
+//   },
+//   text: {
+//     fontSize: 16,
+//     color: "#4A4A4A"
+//   },
+//   textBold: {
+//     fontWeight: "700"
+//   },
+//   review: {
+//     marginBottom: 10
+//   },
+//   dateText: {
+//     fontSize: 12,
+//     color: "#4A4A4A",
+//     marginBottom: 4
+//   },
+//   textInput: {
+//     marginBottom: 20,
+//     color: "#828282"
+//   }
+// });
+
+// class RestaurantDetails extends React.Component {
+//   state = {
+//     reviewsLoading: true,
+//     reviews: [],
+//     newReview: "",
+//     username: ""
+//   };
+
+//   componentDidMount() {
+//     this.fetchReviews();
+//   }
+
+//   fetchReviews = () => {
+//     const item = this.props.navigation.getParam("item", {});
+//     reviewApi(`/reviews?restaurantId=${item._id}`)
+//       .then(res => {
+//         this.setState({
+//           reviews: res.result,
+//           reviewsLoading: false,
+//           username: res.username
+//         });
+//       })
+//       .catch(err => {
+//         console.log(err);
+//       });
+//   };
+
+//   // fetchUser = () => {
+//   //   const item = this.props.navigation.getParam("item", {});
+//   //   reviewApi(`/reviews?restaurantId=${item._id}`)
+//   //     .then(res => {
+//   //       this.setState({
+//   //         reviews: res.result,
+//   //         reviewsLoading: false,
+//   //         username: res.username
+//   //       });
+//   //     })
+//   //     .catch(err => {
+//   //       console.log(err);
+//   //     });
+//   // };
+
+//   submitReview = () => {
+//     const item = this.props.navigation.getParam("item", {});
+//     console.log("username is: ", this.state.username);
+//     reviewApi(`/reviews`, {
+//       method: "POST",
+//       body: JSON.stringify({
+//         restaurantId: item._id,
+//         content: this.state.newReview,
+//         username: this.state.username
+//       })
+//     })
+//       .then(() => {
+//         // this.fetchUser();
+//         this.fetchReviews();
+//         this.setState({ newReview: "" });
+//       })
+//       .catch(err => {
+//         console.log(err);
+//       });
+//   };
+
+//   render() {
+//     const item = this.props.navigation.getParam("item", {});
+
+//     return (
+//       <SafeAreaView style={styles.container}>
+//         <ScrollView>
+//           <Text style={styles.titleText} />
+//           <View style={styles.section}>
+//             <Text style={styles.text}>
+//               <Text style={styles.textBold}>Address:</Text>
+//               {` ${item.address}`}
+//             </Text>
+//             <Text style={styles.text}>
+//               <Text style={styles.textBold}>Hours:</Text>
+//               {` ${item.hours}`}
+//             </Text>
+//           </View>
+
+//           <Text style={styles.titleText}>Reviews</Text>
+//           <View style={styles.section}>
+//             {this.state.reviewsLoading && <ActivityIndicator />}
+//             {this.state.reviews.map(review => (
+//               <View key={review._id} style={styles.review}>
+//                 <Text style={styles.dateText}>
+//                   {format(review.createdAt, "MMMM Do, YYYY")}
+//                 </Text>
+//                 <Text style={styles.text}>{review.content}</Text>
+//                 <Text style={styles.text}>{review.username}</Text>
+//               </View>
+//             ))}
+//           </View>
+
+//           <Text style={styles.titleText}>Write a Review</Text>
+//           <View style={styles.section}>
+//             <TextInput
+//               style={styles.textInput}
+//               placeholder="Write a review..."
+//               numberOfLines={5}
+//               onChangeText={newReview => this.setState({ newReview })}
+//               value={this.state.newReview}
+//             />
+//             <Button text="Submit" onPress={this.submitReview} />
+//           </View>
+//         </ScrollView>
+//       </SafeAreaView>
+//     );
+//   }
+// }
+
+// export default RestaurantDetails;
+
 import React from "react";
 import {
   View,
@@ -12,6 +184,7 @@ import { format } from "date-fns";
 
 import { Button } from "../components/Button";
 import { reviewApi } from "../util/api";
+import { TextField } from "../components/Form";
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +232,9 @@ class RestaurantDetails extends React.Component {
   state = {
     reviewsLoading: true,
     reviews: [],
-    newReview: ""
+    newReview: "",
+    // username: this.props.navigation.getParam("email", {})
+    username: ""
   };
 
   componentDidMount() {
@@ -72,7 +247,8 @@ class RestaurantDetails extends React.Component {
       .then(res => {
         this.setState({
           reviews: res.result,
-          reviewsLoading: false
+          reviewsLoading: false,
+          username: "testuser"
         });
       })
       .catch(err => {
@@ -87,7 +263,8 @@ class RestaurantDetails extends React.Component {
       method: "POST",
       body: JSON.stringify({
         restaurantId: item._id,
-        content: this.state.newReview
+        content: this.state.newReview,
+        username: this.state.username
       })
     })
       .then(() => {
@@ -126,6 +303,9 @@ class RestaurantDetails extends React.Component {
                   {format(review.createdAt, "MMMM Do, YYYY")}
                 </Text>
                 <Text style={styles.text}>{review.content}</Text>
+                <Text style={styles.text}>{this.state.username}</Text>
+
+                {/*review.username*/}
               </View>
             ))}
           </View>
@@ -138,6 +318,12 @@ class RestaurantDetails extends React.Component {
               numberOfLines={5}
               onChangeText={newReview => this.setState({ newReview })}
               value={this.state.newReview}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="testuser"
+              onChangeText={username => this.setState({ username })}
+              value={this.state.username}
             />
             <Button text="Submit" onPress={this.submitReview} />
           </View>
